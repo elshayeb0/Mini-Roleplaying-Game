@@ -191,7 +191,7 @@ function attack() {
   text.innerText +=
     " You attack it with your " + weapons[currentWeaponIndex].name + ".";
   health -= monsters[fighting].level;
-  if(isMonsterHit()){
+  if(isMonsterHit()){ //Before
     monsterHealth -=
     weapons[currentWeaponIndex].power + Math.floor(Math.random() * xp) + 1;
   }
