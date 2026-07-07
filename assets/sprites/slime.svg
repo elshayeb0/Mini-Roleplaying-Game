@@ -1,8 +1,11 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="128" height="96" viewBox="0 0 128 96">
-  <rect width="100%" height="100%" fill="#000"/>
-  <!-- Simple slime pixel sprite -->
-  <circle cx="64" cy="52" r="24" fill="#6fe36f" />
-  <rect x="56" y="72" width="16" height="6" fill="#3f8f3f" rx="2"/>
-  <rect x="56" y="44" width="6" height="6" fill="#000"/>
-  <rect x="66" y="44" width="6" height="6" fill="#000"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 72" width="96" height="72">
+<rect width="96" height="72" fill="#000"/>
+<g>
+<animateTransform attributeName="transform" type="translate" values="0 0;0 -1;0 0" dur="0.8s" repeatCount="indefinite"/>
+<ellipse cx="48" cy="44" rx="28" ry="18" fill="#2fc86b"/>
+<ellipse cx="48" cy="40" rx="24" ry="14" fill="#55e087"/>
+<rect x="36" y="36" width="6" height="6" fill="#133d21"/>
+<rect x="54" y="36" width="6" height="6" fill="#133d21"/>
+<rect x="44" y="48" width="8" height="4" fill="#1f7d40"/>
+</g>
 </svg>

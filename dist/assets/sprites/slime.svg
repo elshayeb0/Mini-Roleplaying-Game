@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 72" width="96" height="72">
+<rect width="96" height="72" fill="#000"/>
+<g>
+<animateTransform attributeName="transform" type="translate" values="0 0;0 -1;0 0" dur="0.8s" repeatCount="indefinite"/>
+<ellipse cx="48" cy="44" rx="28" ry="18" fill="#2fc86b"/>
+<ellipse cx="48" cy="40" rx="24" ry="14" fill="#55e087"/>
+<rect x="36" y="36" width="6" height="6" fill="#133d21"/>
+<rect x="54" y="36" width="6" height="6" fill="#133d21"/>
+<rect x="44" y="48" width="8" height="4" fill="#1f7d40"/>
+</g>
+</svg>
