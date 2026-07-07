@@ -3,58 +3,48 @@
 A mini Dragon Quest–style browser game built with plain HTML, CSS, and JavaScript.
 
 Live demo
-- Deploy this repository to a static host such as Vercel (recommended) or GitHub Pages. See the Vercel section below for a one-click deployment guide.
+- Deploy this repository to a static host such as Vercel (recommended) or GitHub Pages.
 
 About
-- Simple single-page RPG with battles, inventory, and basic progression. Built as a small showcase project.
+- Simple single-page RPG with battles, inventory, basic progression, save/load, audio, and a pixel-like GUI.
 
 How to run locally
 1. Clone the repo:
    git clone https://github.com/elshayeb0/Mini-Roleplaying-Game.git
 2. Change into the directory:
    cd Mini-Roleplaying-Game
-3. Open index.html in your browser (double-click or serve with a static server):
-   - Python 3: python -m http.server 8000
-   - Node (http-server): npx http-server -c-1
-4. Visit http://localhost:8000 in your browser.
-
-Deployment (Vercel)
-- This repo is ready to deploy as a static site. vercel.json is included to ensure the single-page app (SPA) always serves index.html for any route.
-- To deploy with Vercel via the web UI: New Project → Import Git Repository → select this repo → Framework Preset: None / Static Site → Deploy.
-- Or via CLI: npm i -g vercel && vercel --prod
-
-New features added in this update
-- Save / load / reset using localStorage (buttons added to the toolbar).
-- Auto-save on page unload.
-- Responsive/mobile-friendly layout and larger touch targets for small screens.
-- Audio: background music and sound effects (SFX) support with on/off toggles. Place audio files in assets/sounds with these filenames: background.mp3, attack.mp3, hit.mp3, victory.mp3, defeat.mp3, coin.mp3, dodge.mp3. The game will work without audio files; sounds are optional.
-- Accessibility improvements: skip link, aria-labels, live regions, focus outlines, and screen-reader status updates.
-
-Build / production bundle
-This project includes a minimal esbuild-based bundler.
-
-1. Install dependencies:
+3. Install dev dependencies and build:
    npm install
-2. Build production bundle:
    npm run build
-3. The production-ready static site will be in the `dist/` folder. You can serve it with a static server:
+4. Serve the `dist/` folder:
    npx http-server dist -c-1
+5. Visit http://localhost:8080 in your browser.
 
-Package.json and build script added. The build copies index.html and style.css to `dist/` and bundles the JS into `dist/main.js`.
+Audio (remote assets)
+- Background music (CC-BY, attribution required):
+  - "8-Bit Perplexion" by Eric Matyas — http://soundimage.org/wp-content/uploads/2017/10/8-Bit-Perplexion.mp3
+  Attribution note: Music from Soundimage.org should be credited. See https://soundimage.org/ for terms.
 
-Screenshots
-- To add screenshots to this README, create a folder `assets/screenshots/` and add images, for example `assets/screenshots/screen1.png`.
-- Then add Markdown like:
+- SFX (OpenGameArt public domain / CC0 samples):
+  - attack: https://opengameart.org/sites/default/files/Attack_2.mp3
+  - hit: https://opengameart.org/sites/default/files/Hit_1.mp3
+  - coin: https://opengameart.org/sites/default/files/Coin_2.mp3
+  - victory: https://opengameart.org/sites/default/files/Victory_1.mp3
+  - defeat: https://opengameart.org/sites/default/files/Defeat_1.mp3
+  - dodge: https://opengameart.org/sites/default/files/Dodge_1.mp3
 
-  ![Gameplay screenshot 1](assets/screenshots/screen1.png)
+The game links to these remote files by default. If you prefer local assets, place files into `assets/sounds/` with the same filenames and the local copies will be used instead.
 
-- If you'd like, upload screenshots here and I will add them to the README for you.
+Pixel GUI & Screenshots
+- A retro pixel font (Press Start 2P) and pixel-like UI styling were added.
+- Two example screenshots were added in `assets/screenshots/`.
+
+Licenses & Attribution
+- Background music is from Soundimage (Eric Matyas) — please credit: "Music by Eric Matyas, www.soundimage.org" where you showcase the project.
+- SFX used are from OpenGameArt; verify licenses on the source pages if you plan to redistribute.
 
 Contributing
-- Feel free to open PRs or request changes. Tell me which enhancement(s) you'd like and I can implement them and open a pull request.
-
-License
-- Add a license file (e.g., MIT) if you want this project to be explicitly licensed.
+- Feel free to open PRs or request changes. If you provide audio files or screenshots, I can add them directly and update the README.
 
 Credits
 - Built by @elshayeb0

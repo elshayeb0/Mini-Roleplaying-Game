@@ -3,10 +3,11 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <title>RPG - Dragon Repeller</title>
   </head>
-  <body>
+  <body class="pixel">
     <a class="skip-link" href="#game">Skip to game</a>
     <div id="game" role="application" aria-label="Mini roleplaying game">
       <div id="stats" role="status" aria-live="polite">
@@ -37,6 +38,11 @@
       </div>
 
       <div id="sr-status" class="sr-only" aria-live="polite"></div>
+
+      <div id="screenshot-strip" aria-hidden="true">
+        <img src="assets/screenshots/screen1.svg" alt="Gameplay screenshot 1">
+        <img src="assets/screenshots/screen2.svg" alt="Gameplay screenshot 2">
+      </div>
     </div>
     <script src="main.js"></script>
   </body>
