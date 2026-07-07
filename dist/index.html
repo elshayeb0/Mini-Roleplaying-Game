@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <title>RPG - Dragon Repeller</title>
+  </head>
+  <body class="pixel">
+    <a class="skip-link" href="#game">Skip to game</a>
+    <div id="game" role="application" aria-label="Mini roleplaying game">
+      <div id="stats" role="status" aria-live="polite">
+        <span class="stat">XP: <strong><span id="xpText">0</span></strong></span>
+        <span class="stat">Health: <strong><span id="healthText">100</span></strong></span>
+        <span class="stat">Gold: <strong><span id="goldText">50</span></strong></span>
+      </div>
+
+      <div id="toolbar" aria-label="Game toolbar" role="region">
+        <button id="saveBtn" class="small" aria-label="Save game">Save</button>
+        <button id="loadBtn" class="small" aria-label="Load game">Load</button>
+        <button id="resetBtn" class="small" aria-label="Reset game">Reset</button>
+        <button id="toggleMusic" class="small" aria-pressed="false" aria-label="Toggle background music">Music: Off</button>
+        <button id="toggleSfx" class="small" aria-pressed="true" aria-label="Toggle sound effects">SFX: On</button>
+      </div>
+
+      <div id="controls" role="toolbar" aria-label="Game controls">
+        <button id="button1" aria-label="Primary action">Go to store</button>
+        <button id="button2" aria-label="Secondary action">Go to cave</button>
+        <button id="button3" aria-label="Tertiary action">Fight dragon</button>
+      </div>
+
+      <!-- Battle area with pixel sprites -->
+      <div id="battle" aria-hidden="false" aria-label="Battle area">
+        <div class="sprite player" aria-hidden="true">
+          <img id="playerSprite" src="assets/sprites/player.svg" alt="Player sprite">
+        </div>
+        <div class="sprite monster" aria-hidden="true">
+          <img id="monsterSprite" src="assets/sprites/slime.svg" alt="Monster sprite">
+        </div>
+        <div id="floating-container" aria-hidden="true"></div>
+      </div>
+
+      <div id="monsterStats" aria-hidden="true">
+        <span class="stat">Monster Name: <strong><span id="monsterName"></span></strong></span>
+        <span class="stat">Health: <strong><span id="monsterHealth"></span></strong></span>
+      </div>
+      <div id="text" aria-live="polite">
+        Welcome to Dragon Repeller. You must defeat the dragon that is preventing people from leaving the town. You are in the town square. Where do you want to go? Use the buttons above.
+      </div>
+
+      <div id="sr-status" class="sr-only" aria-live="polite"></div>
+
+      <div id="screenshot-strip" aria-hidden="true">
+        <img src="assets/screenshots/screen1.svg" alt="Gameplay screenshot 1">
+        <img src="assets/screenshots/screen2.svg" alt="Gameplay screenshot 2">
+      </div>
+    </div>
+    <script src="main.js"></script>
+  </body>
+</html>
