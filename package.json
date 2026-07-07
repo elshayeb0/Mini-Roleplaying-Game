@@ -1,0 +1,11 @@
+{
+  "name": "mini-roleplaying-game",
+  "version": "1.0.0",
+  "description": "A mini browser RPG",
+  "scripts": {
+    "build": "node scripts/build.js"
+  },
+  "devDependencies": {
+    "esbuild": "^0.18.0"
+  }
+}

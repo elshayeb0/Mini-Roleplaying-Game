@@ -4,6 +4,26 @@ body {
   color: #0a0a23;
 }
 
+.skip-link {
+  position: absolute;
+  left: -999px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
+.skip-link:focus {
+  left: 10px;
+  top: 10px;
+  width: auto;
+  height: auto;
+  background: #fff;
+  padding: 8px;
+  border-radius: 4px;
+  z-index: 9999;
+}
+
 #text {
   background-color: transparent;
   color: #0a0a23;
@@ -26,6 +46,7 @@ body {
   display: flex;
   gap: 8px;
   margin-bottom: 8px;
+  flex-wrap: wrap;
 }
 
 #controls,
@@ -66,6 +87,19 @@ button {
 button.small {
   padding: 6px 8px;
   font-size: 0.9rem;
+}
+
+button:focus {
+  outline: 3px solid #005fcc;
+  outline-offset: 2px;
+}
+
+/* Screen-reader only */
+.sr-only {
+  position: absolute !important;
+  height: 1px; width: 1px; overflow: hidden;
+  clip: rect(1px, 1px, 1px, 1px);
+  white-space: nowrap;
 }
 
 /* Mobile-friendly adjustments */

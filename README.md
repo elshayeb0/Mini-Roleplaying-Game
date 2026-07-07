@@ -19,7 +19,7 @@ How to run locally
 4. Visit http://localhost:8000 in your browser.
 
 Deployment (Vercel)
-- This repo is ready to deploy as a static site. I added vercel.json to ensure the single-page app (SPA) always serves index.html for any route.
+- This repo is ready to deploy as a static site. vercel.json is included to ensure the single-page app (SPA) always serves index.html for any route.
 - To deploy with Vercel via the web UI: New Project → Import Git Repository → select this repo → Framework Preset: None / Static Site → Deploy.
 - Or via CLI: npm i -g vercel && vercel --prod
 
@@ -27,13 +27,20 @@ New features added in this update
 - Save / load / reset using localStorage (buttons added to the toolbar).
 - Auto-save on page unload.
 - Responsive/mobile-friendly layout and larger touch targets for small screens.
-- Minor accessibility: Enter key triggers the primary action and buttons include clearer focus/size.
+- Audio: background music and sound effects (SFX) support with on/off toggles. Place audio files in assets/sounds with these filenames: background.mp3, attack.mp3, hit.mp3, victory.mp3, defeat.mp3, coin.mp3, dodge.mp3. The game will work without audio files; sounds are optional.
+- Accessibility improvements: skip link, aria-labels, live regions, focus outlines, and screen-reader status updates.
 
-Suggested enhancements (I can implement any of these):
-- Add sound effects and background music with an on/off toggle
-- Add keyboard controls and accessibility improvements (aria labels, focus management)
-- Add unit/integration tests for core game logic
-- Add build script (bundle/minify) and a package.json if you want to use modern tooling
+Build / production bundle
+This project includes a minimal esbuild-based bundler.
+
+1. Install dependencies:
+   npm install
+2. Build production bundle:
+   npm run build
+3. The production-ready static site will be in the `dist/` folder. You can serve it with a static server:
+   npx http-server dist -c-1
+
+Package.json and build script added. The build copies index.html and style.css to `dist/` and bundles the JS into `dist/main.js`.
 
 Screenshots
 - To add screenshots to this README, create a folder `assets/screenshots/` and add images, for example `assets/screenshots/screen1.png`.
@@ -41,7 +48,7 @@ Screenshots
 
   ![Gameplay screenshot 1](assets/screenshots/screen1.png)
 
-- If you'd like, share screenshots here and I will add them to the README for you.
+- If you'd like, upload screenshots here and I will add them to the README for you.
 
 Contributing
 - Feel free to open PRs or request changes. Tell me which enhancement(s) you'd like and I can implement them and open a pull request.
