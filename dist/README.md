@@ -1,31 +1,77 @@
 # Mini Roleplaying Game
 
-A mini Dragon Quest–style browser game built with plain HTML, CSS, and JavaScript.
+A retro single-page RPG built with plain HTML, CSS, and JavaScript, now enhanced for production deployment on Vercel.
 
-Live demo
-- Deploy this repository to a static host such as Vercel (recommended) or GitHub Pages.
+## New features
 
-About
-- Simple single-page RPG with battles, inventory, basic progression, save/load, audio, and a pixel-like GUI.
+- Animated pixel sprites
+  - Player state sprites (idle, attack, hurt)
+  - Distinct monster art for slime, fanged beast, and dragon
+  - Combat feedback effects (slash flash, hit particles, floating damage)
+- Gameplay upgrades
+  - Intro/title screen with quick instructions
+  - Difficulty modes (Easy/Normal/Hard) that scale monster stats and rewards
+  - Combo system for bonus damage on consecutive hits
+  - Inventory and stats panel in the HUD
+  - Health bars for player and monster
+  - Improved shop preview text for items and next weapon upgrade
+- UI/UX polish
+  - Loading screen while remote audio is preloaded
+  - Screen fade transitions between scenes
+  - Settings panel for volume, difficulty, and visual effects
+  - Keyboard shortcuts for actions (1/2/3), Inventory (I), Settings (S), and Escape to close panels
+  - Better button hover/active/focus feedback
+- Production readiness
+  - Relative asset paths for Vercel/static hosting
+  - Remote audio failure handling with non-blocking fallback messaging
+  - Minified JavaScript bundle via esbuild
+  - SEO/social metadata in `index.html` (`description`, `og:title`, `og:description`, `og:image`)
+  - Removed debug window export
 
-How to run locally
-1. Clone the repo:
+## Run locally
+
+1. Clone the repository:
+   ```bash
    git clone https://github.com/elshayeb0/Mini-Roleplaying-Game.git
-2. Change into the directory:
    cd Mini-Roleplaying-Game
-3. Install dev dependencies and build:
+   ```
+2. Install dependencies:
+   ```bash
    npm install
+   ```
+3. Build production files:
+   ```bash
    npm run build
-4. Serve the `dist/` folder:
+   ```
+4. Serve `dist/`:
+   ```bash
    npx http-server dist -c-1
-5. Visit http://localhost:8080 in your browser.
+   ```
+5. Open `http://localhost:8080`.
 
-Audio (remote assets)
-- Background music (CC-BY, attribution required):
-  - "8-Bit Perplexion" by Eric Matyas — http://soundimage.org/wp-content/uploads/2017/10/8-Bit-Perplexion.mp3
-  Attribution note: Music from Soundimage.org should be credited. See https://soundimage.org/ for terms.
+## Deploy to Vercel
 
-- SFX (OpenGameArt public domain / CC0 samples):
+### Option A: Vercel dashboard (recommended)
+1. Push your latest branch to GitHub.
+2. Open [https://vercel.com/new](https://vercel.com/new) and import `elshayeb0/Mini-Roleplaying-Game`.
+3. Use these build settings:
+   - Build Command: `npm run build`
+   - Output Directory: `dist`
+4. Deploy.
+
+### Option B: Vercel CLI
+```bash
+npm i -g vercel
+vercel
+vercel --prod
+```
+
+The repository already includes `vercel.json` SPA rewrite configuration.
+
+## Audio attribution
+
+- Background music (CC-BY): Eric Matyas — https://soundimage.org/
+- SFX samples (OpenGameArt):
   - attack: https://opengameart.org/sites/default/files/Attack_2.mp3
   - hit: https://opengameart.org/sites/default/files/Hit_1.mp3
   - coin: https://opengameart.org/sites/default/files/Coin_2.mp3
@@ -33,18 +79,6 @@ Audio (remote assets)
   - defeat: https://opengameart.org/sites/default/files/Defeat_1.mp3
   - dodge: https://opengameart.org/sites/default/files/Dodge_1.mp3
 
-The game links to these remote files by default. If you prefer local assets, place files into `assets/sounds/` with the same filenames and the local copies will be used instead.
+## Build command
 
-Pixel GUI & Screenshots
-- A retro pixel font (Press Start 2P) and pixel-like UI styling were added.
-- Two example screenshots were added in `assets/screenshots/`.
-
-Licenses & Attribution
-- Background music is from Soundimage (Eric Matyas) — please credit: "Music by Eric Matyas, www.soundimage.org" where you showcase the project.
-- SFX used are from OpenGameArt; verify licenses on the source pages if you plan to redistribute.
-
-Contributing
-- Feel free to open PRs or request changes. If you provide audio files or screenshots, I can add them directly and update the README.
-
-Credits
-- Built by @elshayeb0
+- `npm run build` creates optimized production output in `dist/`.
