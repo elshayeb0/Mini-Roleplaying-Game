@@ -29,6 +29,18 @@
         <button id="button2" aria-label="Secondary action">Go to cave</button>
         <button id="button3" aria-label="Tertiary action">Fight dragon</button>
       </div>
+
+      <!-- Battle area with pixel sprites -->
+      <div id="battle" aria-hidden="false" aria-label="Battle area">
+        <div class="sprite player" aria-hidden="true">
+          <img id="playerSprite" src="assets/sprites/player.svg" alt="Player sprite">
+        </div>
+        <div class="sprite monster" aria-hidden="true">
+          <img id="monsterSprite" src="assets/sprites/slime.svg" alt="Monster sprite">
+        </div>
+        <div id="floating-container" aria-hidden="true"></div>
+      </div>
+
       <div id="monsterStats" aria-hidden="true">
         <span class="stat">Monster Name: <strong><span id="monsterName"></span></strong></span>
         <span class="stat">Health: <strong><span id="monsterHealth"></span></strong></span>

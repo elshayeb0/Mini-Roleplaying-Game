@@ -1,4 +1,4 @@
-// Mini RPG game logic with remote audio assets, pixel UI tweaks and accessibility
+// Mini RPG game logic with remote audio assets, pixel UI tweaks, sprite animations and accessibility
 let xp = 0;
 let health = 100;
 let gold = 50;
@@ -27,8 +27,12 @@ const toggleMusicBtn = document.querySelector('#toggleMusic');
 const toggleSfxBtn = document.querySelector('#toggleSfx');
 const srStatus = document.querySelector('#sr-status');
 
+const playerSpriteImg = document.querySelector('#playerSprite');
+const monsterSpriteImg = document.querySelector('#monsterSprite');
+const floatingContainer = document.querySelector('#floating-container');
+
 const weapons = [ { name: 'stick', power: 5 }, { name: 'dagger', power: 30 }, { name: 'claw hammer', power: 50 }, { name: 'sword', power: 100 } ];
-const monsters = [ { name: "slime", level: 2, health: 15 }, { name: "fanged beast", level: 8, health: 60 }, { name: "dragon", level: 20, health: 300 } ];
+const monsters = [ { name: "slime", level: 2, health: 15, sprite: 'assets/sprites/slime.svg' }, { name: "fanged beast", level: 8, health: 60, sprite: 'assets/sprites/slime.svg' }, { name: "dragon", level: 20, health: 300, sprite: 'assets/sprites/dragon.svg' } ];
 const locations = [
   { name: "town square", "button text": ["Go to store", "Go to cave", "Fight dragon"], "button functions": [goStore, goCave, fightDragon], text: "You are in the town square. You see a sign that says \"Store\"." },
   { name: "store", "button text": ["Buy 10 health (10 gold)", "Buy weapon (30 gold)", "Go to town square"], "button functions": [buyHealth, buyWeapon, goTown], text: "You enter the store." },
@@ -88,14 +92,16 @@ function fightSlime() { fighting = 0; goFight(); }
 function fightBeast() { fighting = 1; goFight(); }
 function fightDragon() { fighting = 2; goFight(); }
 
-function goFight() { update(locations[3]); monsterHealth = monsters[fighting].health; monsterStats.style.display = "block"; monsterName.innerText = monsters[fighting].name; monsterHealthText.innerText = monsterHealth; }
+function goFight() { update(locations[3]); monsterHealth = monsters[fighting].health; monsterStats.style.display = "block"; monsterName.innerText = monsters[fighting].name; monsterHealthText.innerText = monsterHealth; // update sprite
+  const monster = monsters[fighting]; if (monster && monster.sprite) { monsterSpriteImg.src = monster.sprite; }
+}
 
 function attack() {
   text.innerText = "The " + monsters[fighting].name + " attacks.";
   text.innerText += " You attack it with your " + weapons[currentWeapon].name + ".";
   health -= getMonsterAttackValue(monsters[fighting].level);
   playSfx('hit');
-  if (isMonsterHit()) { monsterHealth -= weapons[currentWeapon].power + Math.floor(Math.random() * xp) + 1; playSfx('attack'); }
+  if (isMonsterHit()) { const damage = weapons[currentWeapon].power + Math.floor(Math.random() * xp) + 1; monsterHealth -= damage; animateAttack(damage); playSfx('attack'); }
   else { text.innerText += " You miss."; }
   updateStats(); monsterHealthText.innerText = monsterHealth;
   if (health <= 0) { lose(); }
@@ -105,11 +111,11 @@ function attack() {
 
 function getMonsterAttackValue(level) { const hit = (level * 5) - (Math.floor(Math.random() * xp)); console.log(hit); return hit > 0 ? hit : 0; }
 function isMonsterHit() { return Math.random() > .2 || health < 20; }
-function dodge() { showMessage("You dodge the attack from the " + monsters[fighting].name); playSfx('dodge'); }
+function dodge() { showMessage("You dodge the attack from the " + monsters[fighting].name); playSfx('dodge'); animateDodge(); }
 
-function defeatMonster() { gold += Math.floor(monsters[fighting].level * 6.7); xp += monsters[fighting].level; updateStats(); playSfx('victory'); update(locations[4]); }
-function lose() { playSfx('defeat'); update(locations[5]); }
-function winGame() { playSfx('victory'); update(locations[6]); }
+function defeatMonster() { gold += Math.floor(monsters[fighting].level * 6.7); xp += monsters[fighting].level; updateStats(); playSfx('victory'); animateVictory(); update(locations[4]); }
+function lose() { playSfx('defeat'); animateDefeat(); update(locations[5]); }
+function winGame() { playSfx('victory'); animateVictory(); update(locations[6]); }
 
 function restart() { xp = 0; health = 100; gold = 50; currentWeapon = 0; inventory = ["stick"]; updateStats(); goTown(); }
 function easterEgg() { update(locations[7]); }
@@ -119,8 +125,6 @@ function pickEight() { pick(8); }
 function pick(guess) { const numbers = []; while (numbers.length < 10) { numbers.push(Math.floor(Math.random() * 11)); } text.innerText = "You picked " + guess + ". Here are the random numbers:\n"; for (let i = 0; i < 10; i++) { text.innerText += numbers[i] + "\n"; } if (numbers.includes(guess)) { text.innerText += "Right! You win 20 gold!"; gold += 20; updateStats(); playSfx('coin'); } else { text.innerText += "Wrong! You lose 10 health!"; health -= 10; updateStats(); if (health <= 0) { lose(); } } }
 
 // --- Remote Audio support (public CC0/CC-BY assets) ---
-// Background music: Eric Matyas (Soundimage) - CC-BY (attribution required)
-// SFX: samples from OpenGameArt (public domain / CC0) - check sources if needed
 const audioFiles = {
   background: 'http://soundimage.org/wp-content/uploads/2017/10/8-Bit-Perplexion.mp3',
   attack: 'https://opengameart.org/sites/default/files/Attack_2.mp3',
@@ -134,32 +138,56 @@ const audioFiles = {
 const audio = { background: null, sfx: {} };
 let audioSettings = { music: false, sfx: true };
 
-function initAudio() {
-  try { const saved = localStorage.getItem(AUDIO_SETTINGS_KEY); if (saved) audioSettings = Object.assign(audioSettings, JSON.parse(saved)); } catch (e) { }
+function initAudio() { try { const saved = localStorage.getItem(AUDIO_SETTINGS_KEY); if (saved) audioSettings = Object.assign(audioSettings, JSON.parse(saved)); } catch (e) { }
+  try { audio.background = new Audio(audioFiles.background); audio.background.loop = true; audio.background.volume = 0.5; audio.background.addEventListener('error', () => { audio.background = null; }); } catch (e) { audio.background = null; }
+  Object.keys(audioFiles).forEach(key => { if (key === 'background') return; const src = audioFiles[key]; try { const a = new Audio(src); a.addEventListener('error', () => { }); audio.sfx[key] = a; } catch (e) { } });
+  updateAudioButtons(); if (audioSettings.music) startMusic(); }
 
-  try {
-    audio.background = new Audio(audioFiles.background);
-    audio.background.loop = true; audio.background.volume = 0.5;
-    audio.background.addEventListener('error', () => { audio.background = null; });
-  } catch (e) { audio.background = null; }
-
-  Object.keys(audioFiles).forEach(key => {
-    if (key === 'background') return;
-    const src = audioFiles[key];
-    try { const a = new Audio(src); a.addEventListener('error', () => { /* ignore missing */ }); audio.sfx[key] = a; } catch (e) { /* ignore */ }
-  });
-
-  updateAudioButtons(); if (audioSettings.music) startMusic();
-}
-
-function playSfx(name) { if (!audioSettings.sfx) return; const snd = audio.sfx[name]; if (!snd) return; try { const instance = snd.cloneNode(); instance.play().catch(()=>{}); } catch (e) { }
-}
+function playSfx(name) { if (!audioSettings.sfx) return; const snd = audio.sfx[name]; if (!snd) return; try { const instance = snd.cloneNode(); instance.play().catch(()=>{}); } catch (e) { } }
 function startMusic() { if (audio.background && audioSettings.music) { audio.background.play().catch(()=>{}); } }
 function stopMusic() { if (audio.background) { audio.background.pause(); audio.background.currentTime = 0; } }
 function toggleMusic() { audioSettings.music = !audioSettings.music; if (audioSettings.music) startMusic(); else stopMusic(); persistAudioSettings(); updateAudioButtons(); }
 function toggleSfx() { audioSettings.sfx = !audioSettings.sfx; persistAudioSettings(); updateAudioButtons(); }
 function persistAudioSettings() { try { localStorage.setItem(AUDIO_SETTINGS_KEY, JSON.stringify(audioSettings)); } catch (e) {} }
 function updateAudioButtons() { toggleMusicBtn.setAttribute('aria-pressed', String(!!audioSettings.music)); toggleMusicBtn.innerText = `Music: ${audioSettings.music ? 'On' : 'Off'}`; toggleSfxBtn.setAttribute('aria-pressed', String(!!audioSettings.sfx)); toggleSfxBtn.innerText = `SFX: ${audioSettings.sfx ? 'On' : 'Off'}`; }
+
+// --- Sprite & animation helpers ---
+function animateAttack(damage) {
+  // player swings, monster shakes and show damage
+  const playerEl = document.querySelector('.sprite.player');
+  const monsterEl = document.querySelector('.sprite.monster');
+  if (playerEl) { playerEl.classList.add('swing'); playerEl.addEventListener('animationend', () => playerEl.classList.remove('swing'), { once: true }); }
+  if (monsterEl) { monsterEl.classList.add('shake'); monsterEl.addEventListener('animationend', () => monsterEl.classList.remove('shake'), { once: true }); }
+  showFloatingText('-' + damage, monsterEl);
+}
+function animateDodge() {
+  const playerEl = document.querySelector('.sprite.player');
+  if (playerEl) { playerEl.classList.add('flash'); playerEl.addEventListener('animationend', () => playerEl.classList.remove('flash'), { once: true }); }
+}
+function animateVictory() {
+  const monsterEl = document.querySelector('.sprite.monster');
+  if (monsterEl) { monsterEl.classList.add('flash'); monsterEl.addEventListener('animationend', () => monsterEl.classList.remove('flash'), { once: true }); }
+  showFloatingText('WIN!', document.querySelector('.sprite.player'));
+}
+function animateDefeat() {
+  const playerEl = document.querySelector('.sprite.player');
+  if (playerEl) { playerEl.classList.add('shake'); playerEl.addEventListener('animationend', () => playerEl.classList.remove('shake'), { once: true }); }
+  showFloatingText('DEFEAT', document.querySelector('.sprite.monster'));
+}
+
+function showFloatingText(textContent, anchorEl) {
+  if (!floatingContainer || !anchorEl) return;
+  const rect = anchorEl.getBoundingClientRect();
+  const parentRect = document.querySelector('#game').getBoundingClientRect();
+  const el = document.createElement('div');
+  el.className = 'floating';
+  el.innerText = textContent;
+  // position relative to game container
+  el.style.left = (rect.left - parentRect.left + rect.width/2) + 'px';
+  el.style.top = (rect.top - parentRect.top + 10) + 'px';
+  floatingContainer.appendChild(el);
+  setTimeout(() => { floatingContainer.removeChild(el); }, 1000);
+}
 
 // --- Save / Load ---
 function saveGame() { const state = { xp, health, gold, currentWeapon, inventory }; try { localStorage.setItem(SAVE_KEY, JSON.stringify(state)); showMessage('Game saved.'); } catch (e) { console.error('Save failed', e); showMessage('Save failed: localStorage not available'); } }

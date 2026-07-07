@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="96" viewBox="0 0 128 96">
+  <rect width="100%" height="100%" fill="#000"/>
+  <!-- Simple dragon pixel sprite -->
+  <rect x="24" y="30" width="80" height="30" fill="#d86565"/>
+  <rect x="36" y="20" width="16" height="12" fill="#ffd27f"/>
+  <rect x="76" y="20" width="16" height="12" fill="#ffd27f"/>
+  <rect x="40" y="40" width="12" height="10" fill="#8f1f1f"/>
+  <rect x="76" y="40" width="12" height="10" fill="#8f1f1f"/>
+</svg>
