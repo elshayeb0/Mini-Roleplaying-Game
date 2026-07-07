@@ -1,35 +1,51 @@
 body {
   background-color: #0a0a23;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  color: #0a0a23;
 }
 
 #text {
-  background-color: #0a0a23;
-  color: #ffffff;
+  background-color: transparent;
+  color: #0a0a23;
   padding: 10px;
+  white-space: pre-wrap;
 }
 
 #game {
-  max-width: 500px;
-  max-height: 400px;
+  width: min(700px, 95%);
+  max-width: 700px;
   background-color: #ffffff;
-  color: #ffffff;
-  margin: 30px auto 0px;
-  padding: 10px;
+  color: #0a0a23;
+  margin: 20px auto;
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+}
+
+#toolbar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
 }
 
 #controls,
 #stats {
   border: 1px solid #0a0a23;
-  padding: 5px;
+  padding: 8px;
   color: #0a0a23;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  align-items: center;
 }
 
 #monsterStats {
   display: none;
   border: 1px solid #0a0a23;
-  padding: 5px;
+  padding: 8px;
   color: #ffffff;
   background-color: #c70d0d;
+  margin-top: 8px;
 }
 
 .stat {
@@ -42,4 +58,19 @@ button {
   background-color: #feac32;
   background-image: linear-gradient(#fecc4c, #ffac33);
   border: 3px solid #feac32;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+button.small {
+  padding: 6px 8px;
+  font-size: 0.9rem;
+}
+
+/* Mobile-friendly adjustments */
+@media (max-width: 480px) {
+  #game { padding: 10px; }
+  #controls button { flex: 1 1 100%; padding: 14px; font-size: 1.1rem; }
+  #stats { font-size: 1rem; }
 }

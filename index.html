@@ -2,6 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
     <title>RPG - Dragon Repeller</title>
   </head>
@@ -12,6 +13,13 @@
         <span class="stat">Health: <strong><span id="healthText">100</span></strong></span>
         <span class="stat">Gold: <strong><span id="goldText">50</span></strong></span>
       </div>
+
+      <div id="toolbar" aria-hidden="false">
+        <button id="saveBtn" class="small">Save</button>
+        <button id="loadBtn" class="small">Load</button>
+        <button id="resetBtn" class="small">Reset</button>
+      </div>
+
       <div id="controls">
         <button id="button1">Go to store</button>
         <button id="button2">Go to cave</button>

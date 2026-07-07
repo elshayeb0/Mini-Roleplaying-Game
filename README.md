@@ -23,18 +23,25 @@ Deployment (Vercel)
 - To deploy with Vercel via the web UI: New Project → Import Git Repository → select this repo → Framework Preset: None / Static Site → Deploy.
 - Or via CLI: npm i -g vercel && vercel --prod
 
+New features added in this update
+- Save / load / reset using localStorage (buttons added to the toolbar).
+- Auto-save on page unload.
+- Responsive/mobile-friendly layout and larger touch targets for small screens.
+- Minor accessibility: Enter key triggers the primary action and buttons include clearer focus/size.
+
 Suggested enhancements (I can implement any of these):
-- Add a high-score / save system using localStorage
-- Mobile layout improvements / responsive UI
 - Add sound effects and background music with an on/off toggle
 - Add keyboard controls and accessibility improvements (aria labels, focus management)
-- Add screenshots/GIF and demo video in README
 - Add unit/integration tests for core game logic
-- Add a build script (bundle/minify) and a package.json if you want to use modern tooling
+- Add build script (bundle/minify) and a package.json if you want to use modern tooling
 
-Files added
-- README.md — project overview, run and deploy instructions, features, and enhancement ideas
-- vercel.json — configuration to rewrite all routes to index.html for SPA behavior on Vercel
+Screenshots
+- To add screenshots to this README, create a folder `assets/screenshots/` and add images, for example `assets/screenshots/screen1.png`.
+- Then add Markdown like:
+
+  ![Gameplay screenshot 1](assets/screenshots/screen1.png)
+
+- If you'd like, share screenshots here and I will add them to the README for you.
 
 Contributing
 - Feel free to open PRs or request changes. Tell me which enhancement(s) you'd like and I can implement them and open a pull request.

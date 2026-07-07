@@ -1,3 +1,4 @@
+// Mini RPG game logic with save/load and responsive improvements
 let xp = 0;
 let health = 100;
 let gold = 50;
@@ -5,6 +6,8 @@ let currentWeapon = 0;
 let fighting;
 let monsterHealth;
 let inventory = ["stick"];
+
+const SAVE_KEY = 'mini-rpg-save-v1';
 
 const button1 = document.querySelector('#button1');
 const button2 = document.querySelector("#button2");
@@ -16,6 +19,10 @@ const goldText = document.querySelector("#goldText");
 const monsterStats = document.querySelector("#monsterStats");
 const monsterName = document.querySelector("#monsterName");
 const monsterHealthText = document.querySelector("#monsterHealth");
+const saveBtn = document.querySelector('#saveBtn');
+const loadBtn = document.querySelector('#loadBtn');
+const resetBtn = document.querySelector('#resetBtn');
+
 const weapons = [
   { name: 'stick', power: 5 },
   { name: 'dagger', power: 30 },
@@ -95,6 +102,11 @@ button1.onclick = goStore;
 button2.onclick = goCave;
 button3.onclick = fightDragon;
 
+// toolbar buttons
+saveBtn.onclick = saveGame;
+loadBtn.onclick = loadGame;
+resetBtn.onclick = resetGame;
+
 function update(location) {
   monsterStats.style.display = "none";
   button1.innerText = location["button text"][0];
@@ -104,6 +116,16 @@ function update(location) {
   button2.onclick = location["button functions"][1];
   button3.onclick = location["button functions"][2];
   text.innerHTML = location.text;
+}
+
+function updateStats() {
+  xpText.innerText = xp;
+  healthText.innerText = health;
+  goldText.innerText = gold;
+}
+
+function showMessage(msg) {
+  text.innerText = msg;
 }
 
 function goTown() {
@@ -122,10 +144,9 @@ function buyHealth() {
   if (gold >= 10) {
     gold -= 10;
     health += 10;
-    goldText.innerText = gold;
-    healthText.innerText = health;
+    updateStats();
   } else {
-    text.innerText = "You do not have enough gold to buy health.";
+    showMessage("You do not have enough gold to buy health.");
   }
 }
 
@@ -134,16 +155,15 @@ function buyWeapon() {
     if (gold >= 30) {
       gold -= 30;
       currentWeapon++;
-      goldText.innerText = gold;
+      updateStats();
       let newWeapon = weapons[currentWeapon].name;
-      text.innerText = "You now have a " + newWeapon + ".";
+      showMessage("You now have a " + newWeapon + ". In your inventory you have: " + inventory.concat([newWeapon]));
       inventory.push(newWeapon);
-      text.innerText += " In your inventory you have: " + inventory;
     } else {
-      text.innerText = "You do not have enough gold to buy a weapon.";
+      showMessage("You do not have enough gold to buy a weapon.");
     }
   } else {
-    text.innerText = "You already have the most powerful weapon!";
+    showMessage("You already have the most powerful weapon!");
     button2.innerText = "Sell weapon for 15 gold";
     button2.onclick = sellWeapon;
   }
@@ -152,12 +172,12 @@ function buyWeapon() {
 function sellWeapon() {
   if (inventory.length > 1) {
     gold += 15;
-    goldText.innerText = gold;
-    let currentWeapon = inventory.shift();
-    text.innerText = "You sold a " + currentWeapon + ".";
-    text.innerText += " In your inventory you have: " + inventory;
+    updateStats();
+    let sold = inventory.shift();
+    currentWeapon = Math.max(0, currentWeapon - 1);
+    showMessage("You sold a " + sold + ". In your inventory you have: " + inventory);
   } else {
-    text.innerText = "Don't sell your only weapon!";
+    showMessage("Don't sell your only weapon!");
   }
 }
 
@@ -193,7 +213,7 @@ function attack() {
   } else {
     text.innerText += " You miss.";
   }
-  healthText.innerText = health;
+  updateStats();
   monsterHealthText.innerText = monsterHealth;
   if (health <= 0) {
     lose();
@@ -221,14 +241,13 @@ function isMonsterHit() {
 }
 
 function dodge() {
-  text.innerText = "You dodge the attack from the " + monsters[fighting].name;
+  showMessage("You dodge the attack from the " + monsters[fighting].name);
 }
 
 function defeatMonster() {
   gold += Math.floor(monsters[fighting].level * 6.7);
   xp += monsters[fighting].level;
-  goldText.innerText = gold;
-  xpText.innerText = xp;
+  updateStats();
   update(locations[4]);
 }
 
@@ -246,9 +265,7 @@ function restart() {
   gold = 50;
   currentWeapon = 0;
   inventory = ["stick"];
-  goldText.innerText = gold;
-  healthText.innerText = health;
-  xpText.innerText = xp;
+  updateStats();
   goTown();
 }
 
@@ -276,13 +293,80 @@ function pick(guess) {
   if (numbers.includes(guess)) {
     text.innerText += "Right! You win 20 gold!";
     gold += 20;
-    goldText.innerText = gold;
+    updateStats();
   } else {
     text.innerText += "Wrong! You lose 10 health!";
     health -= 10;
-    healthText.innerText = health;
+    updateStats();
     if (health <= 0) {
       lose();
     }
   }
 }
+
+// --- Save / Load ---
+function saveGame() {
+  const state = {
+    xp,
+    health,
+    gold,
+    currentWeapon,
+    inventory
+  };
+  try {
+    localStorage.setItem(SAVE_KEY, JSON.stringify(state));
+    showMessage('Game saved.');
+  } catch (e) {
+    console.error('Save failed', e);
+    showMessage('Save failed: localStorage not available');
+  }
+}
+
+function loadGame() {
+  try {
+    const raw = localStorage.getItem(SAVE_KEY);
+    if (!raw) {
+      showMessage('No saved game found.');
+      return;
+    }
+    const state = JSON.parse(raw);
+    xp = Number(state.xp) || 0;
+    health = Number(state.health) || 100;
+    gold = Number(state.gold) || 0;
+    currentWeapon = Number(state.currentWeapon) || 0;
+    inventory = Array.isArray(state.inventory) ? state.inventory : ["stick"];
+    updateStats();
+    showMessage('Game loaded.');
+    goTown();
+  } catch (e) {
+    console.error('Load failed', e);
+    showMessage('Load failed: corrupted save data');
+  }
+}
+
+function resetGame() {
+  localStorage.removeItem(SAVE_KEY);
+  restart();
+  showMessage('Save cleared and game reset.');
+}
+
+// Auto-load on start if a save exists
+if (localStorage.getItem(SAVE_KEY)) {
+  loadGame();
+} else {
+  updateStats();
+  goTown();
+}
+
+// Auto-save on unload
+window.addEventListener('beforeunload', () => {
+  try { saveGame(); } catch (e) { /* ignore */ }
+});
+
+// Keyboard accessibility: basic Enter triggers first control button
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') {
+    // Activate the first control button by default
+    button1.click();
+  }
+});
